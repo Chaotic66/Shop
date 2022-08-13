@@ -3,8 +3,8 @@
         <thead>
             <th>
 
-                全选<input type="checkbox" >
-                反选<input type="checkbox" >
+                全选<input type="checkbox" v-model="flag" @click='allPick'>
+                反选<input type="checkbox" @click='rePick'>
 
             </th>
             <th>产品图片</th>
@@ -17,7 +17,7 @@
         <tbody>
             <tr v-for='item in list' :key='item.id'>
                 <td>
-                    <input type="checkbox" >
+                    <input type="checkbox" v-model='item.pickFlag'>
                 </td>
                 <td>
                     <img :ssc='item.imgSrc'>
@@ -50,16 +50,37 @@
 
 <script>
     export default{
-        props:['list']
+        props:['list','turn']
         ,
+        data(){
+            return{
+                flag:this.turn
+            }
+        },
         methods:{
             del(id){
                 this.$emit('colation',id)
+            },
+            allPick(){
+                console.log(this.flag);
+                this.list.forEach(item => {
+                    item.pickFlag =  !this.flag
+                });
+            },
+            rePick(){
+                this.list.forEach(item => {
+                    item.pickFlag = !item.pickFlag 
+                });
             }
         },
         computed:{
             total(){
-                return 
+                let totalPrice = 0
+                let arr2 = this.list.filter(item=>item.pickFlag)
+                return (arr2.reduce((totalPrice,item)=>{
+                       return totalPrice += (item.productPrice*item.productNum)
+                },0))
+               
             }
         }
 

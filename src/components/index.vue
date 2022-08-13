@@ -2,7 +2,7 @@
     <div>
         <listTop @costum='change'/>
 
-        <listDown :list='arr'  @colation='handle'/>
+        <listDown :list='arr' :turn='flag'  @colation='handle' />
     </div>
 
 
@@ -57,7 +57,8 @@
         },
         handle(id){
             this.arr = this.arr.filter(item=>item.topId!=id)   
-        }   
+        },
+           
 
     }
   } 
